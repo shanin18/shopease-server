@@ -29,9 +29,6 @@ app.use(express.json());
 
 const uri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.gacal02.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
-console.log(process.env.DB_USER);
-console.log(process.env.DB_PASSWORD);
-
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
