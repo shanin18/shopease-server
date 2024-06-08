@@ -45,9 +45,9 @@ async function run() {
     // Routes
     app.use("/products", getProducts(database));
     app.use("/products", getProductDetailsById(database));
-    app.use("/add-product", addProduct(database));
-    app.use("/update-product", updateProduct(database));
-    app.use("/delete-product", deleteProduct(database));
+    app.use("/products", addProduct(database));
+    app.use("/products", updateProduct(database));
+    app.use("/products", deleteProduct(database));
   } finally {
     // await client.close();
   }
