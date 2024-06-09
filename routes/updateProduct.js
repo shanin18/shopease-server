@@ -22,6 +22,7 @@ const updateProduct = (database) => {
         $set: {
           name: updatedProductData.name,
           seller: updatedProductData.seller,
+          category: updatedProductData.category,
           price: updatedProductData.price,
           ratings: updatedProductData.ratings,
           img: updatedProductData.img,
@@ -33,7 +34,11 @@ const updateProduct = (database) => {
       };
       const options = { upsert: true };
 
-      const result = await productsCollection.updateOne(filter, updateData, options);
+      const result = await productsCollection.updateOne(
+        filter,
+        updateData,
+        options
+      );
       res.status(201).json(result);
     } catch (err) {
       console.error("Error updating product:", err);
