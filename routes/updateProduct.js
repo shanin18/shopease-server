@@ -31,14 +31,10 @@ const updateProduct = (database) => {
           quantity: updatedProductData.quantity,
         },
       };
+      const options = { upsert: true };
 
-      const result = await productsCollection.updateOne(filter, updateData);
-
-      if (result.modifiedCount === 0) {
-        return res.status(404).json({ message: "Product not found" });
-      }
-
-      res.json({ message: "Product updated successfully" });
+      const result = await productsCollection.updateOne(filter, updateData, options);
+      res.status(201).json(result);
     } catch (err) {
       console.error("Error updating product:", err);
       res.status(500).json({ message: "Internal Server Error" });
