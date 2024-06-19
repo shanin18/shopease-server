@@ -31,7 +31,7 @@ const authRoutes = (database) => {
     res.status(201).json({
       message: "User registered successfully",
       userId: result.insertedId,
-      token, // Send the token in the response
+      token,
     });
   });
 
