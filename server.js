@@ -7,6 +7,8 @@ const getProductDetailsById = require("./routes/getProductDetailsById");
 const addProduct = require("./routes/addProduct");
 const updateProduct = require("./routes/updateProduct");
 const deleteProduct = require("./routes/deleteProduct");
+const authenticateToken = require("./middleware/authMiddleware");
+const authRoutes = require("./routes/auth");
 
 // Start Server
 const PORT = process.env.PORT || 5000;
@@ -42,12 +44,15 @@ async function run() {
     await client.connect();
     const database = client.db("shopease");
 
-    // Routes
-    app.use("/products", getProducts(database));
-    app.use("/products", getProductDetailsById(database));
-    app.use("/products", addProduct(database));
-    app.use("/products", updateProduct(database));
-    app.use("/products", deleteProduct(database));
+    // Auth Routes
+    app.use("/users", authRoutes(database));
+
+    // Product Routes
+    app.use("/products", authenticateToken, getProducts(database));
+    app.use("/products", authenticateToken, getProductDetailsById(database));
+    app.use("/products", authenticateToken, addProduct(database));
+    app.use("/products", authenticateToken, updateProduct(database));
+    app.use("/products", authenticateToken, deleteProduct(database));
   } finally {
     // await client.close();
   }
