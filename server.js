@@ -48,7 +48,7 @@ async function run() {
     app.use("/users", authRoutes(database));
 
     // Product Routes
-    app.use("/products", authenticateToken, getProducts(database));
+    app.use("/products", getProducts(database));
     app.use("/products", authenticateToken, getProductDetailsById(database));
     app.use("/products", authenticateToken, addProduct(database));
     app.use("/products", authenticateToken, updateProduct(database));
