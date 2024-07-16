@@ -9,6 +9,7 @@ const updateProduct = require("./routes/updateProduct");
 const deleteProduct = require("./routes/deleteProduct");
 const authenticateToken = require("./middleware/authMiddleware");
 const authRoutes = require("./routes/auth");
+const getUsers = require("./routes/getUsers");
 
 // Start Server
 const PORT = process.env.PORT || 5000;
@@ -53,13 +54,14 @@ async function run() {
     app.use("/products", authenticateToken, addProduct(database));
     app.use("/products", authenticateToken, updateProduct(database));
     app.use("/products", authenticateToken, deleteProduct(database));
+    app.use("/users", authenticateToken, getUsers(database));
   } finally {
     // await client.close();
   }
 }
 
 run().catch(console.dir);
-  
+
 app.get("/", (req, res) => {
   res.send("Welcome to shopease server");
 });
