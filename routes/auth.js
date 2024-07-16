@@ -9,12 +9,14 @@ const authRoutes = (database) => {
   // Register a new user
   router.post("/register", async (req, res) => {
     const { email, password } = req.body;
+    console.log("Registering user:", email); // Log email for debugging
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const usersCollection = database.collection("users");
 
     const existingUser = await usersCollection.findOne({ email });
     if (existingUser) {
+      console.log("Email already exists:", email); // Log if email already exists
       return res.status(400).json({ message: "Email already exists" });
     }
 
@@ -38,16 +40,19 @@ const authRoutes = (database) => {
   // Login user and generate JWT
   router.post("/login", async (req, res) => {
     const { email, password } = req.body;
+    console.log("Logging in user:", email); // Log email for debugging
 
     const usersCollection = database.collection("users");
 
     const user = await usersCollection.findOne({ email });
     if (!user) {
+      console.log("Invalid email:", email); // Log invalid email
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user?.password);
     if (!isPasswordValid) {
+      console.log("Invalid password for email:", email); // Log invalid password
       return res.status(400).json({ message: "Invalid email or password" });
     }
 

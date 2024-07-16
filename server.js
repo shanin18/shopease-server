@@ -54,7 +54,7 @@ async function run() {
     app.use("/products", authenticateToken, addProduct(database));
     app.use("/products", authenticateToken, updateProduct(database));
     app.use("/products", authenticateToken, deleteProduct(database));
-    app.use("/users", authenticateToken, getUsers(database));
+    app.use("/users", getUsers(database));
   } finally {
     // await client.close();
   }
