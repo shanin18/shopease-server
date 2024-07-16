@@ -88,12 +88,12 @@ Install this project with:
 To run tests, run the following command:
 
 ```sh
-  node server.js
+  node index.js
 ```
 if you have installed nodemon then
 
 ```sh
-  nodemon server.js
+  nodemon index.js
 ```
 
 ### Deployment
