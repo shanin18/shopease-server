@@ -1,6 +1,7 @@
+require("dotenv").config(); 
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
+const app = express();
 const { ObjectId } = require("mongodb");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const authMiddleware = require("./middleware/authMiddleware");
@@ -13,8 +14,6 @@ const DB_USER = process.env.DB_USER;
 const DB_PASSWORD = process.env.DB_PASSWORD;
 const jwtSecret = process.env.JWT_SECRET || "my_jwt_secret_key";
 
-// Initialize Express App
-const app = express();
 
 // Middleware
 const corsConfig = {
@@ -25,19 +24,13 @@ const corsConfig = {
 
 // Enable CORS
 app.use(cors(corsConfig));
+app.options("", cors(corsConfig))
 app.use(express.json());
-app.use((req, res, next) => {
-  res.setHeader(
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate, proxy-revalidate"
-  );
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Expires", "0");
-  next();
-});
+
 
 const uri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@cluster0.gacal02.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -48,7 +41,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
     const database = client.db("shopease");
 
     // collections
@@ -228,6 +221,12 @@ async function run() {
       );
       res.json({ token });
     });
+
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!"
+    );
   } finally {
     // await client.close();
   }
@@ -242,3 +241,6 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
+
+
+module.exports = app;
